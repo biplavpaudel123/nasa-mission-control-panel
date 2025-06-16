@@ -8,12 +8,18 @@
     "install": "npm install --prefix server && npm install --prefix client",
     "server": "npm run watch --prefix server",
     "client": "npm start --prefix client",
-    "watch": "npm start server && npm run client",
+    "watch": "concurrently \"npm run server\" \"npm run client\"",
     "test": "npm run test --prefix server && npm run test --prefix client",
-    "deploy":"npm run build --prefix client && npm start --prefix server"
+    "deploy": "npm run build --prefix client && npm start --prefix server"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
 }

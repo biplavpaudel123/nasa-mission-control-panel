@@ -49,7 +49,7 @@ describe('Test POST /launches', () => {
             const response= await request(app)
             .post('/launches')
             .send({ ...launchDataWithoutDate, 'launchDate': 'Fake date' })
-            .expect(401)
+            .expect(400)
 
        expect(response.body).toStrictEqual({
         error: 'Invalid Launch Date',

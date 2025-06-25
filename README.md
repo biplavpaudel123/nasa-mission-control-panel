@@ -12,4 +12,4 @@ For Running:
 
 ## Architecture diragram
 
-![Architecture diagram of Nasa-mission-control](/assets//images/architecture_diagram.jpeg)
+![Architecture diagram of Nasa-mission-control](/assets//images/architecture_diagram.png)

@@ -11,7 +11,10 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "jest":{
+    "testEnviroment":"node"
+  },
+  "description": "Nasa Mission Control API",
   "dependencies": {
     "cors": "^2.8.5",
     "csv-parse": "^5.6.0",

@@ -1,41 +1,50 @@
-// const launches = require ('./launches.mongo')
+const planets = require('./planets.mongo');
+const launchesDatabase = require ('./launches.mongo')
 
-const launches = new Map();
+const DEFAULT_FLIGHT_NUMBER=100;
 
-let latestFlightNumber= 100;
-
-// const launch={
-//     flightNumber: 100,
-//     launchDate: new Date('December 27,2030'),
-//     mission: 'Kelper Exploration X',
-//     rocket:'Explorer IS1',
-//     destination:'Kelper-442b',
-//     customer: ['ZTM','NASA'],
-//     upcoming: true,
-//     success: true,
-// };
-
-function existsLaunchWithID(launchId){
-    return launches.has(launchId);
+async function existsLaunchWithID(checkFlightNumber){
+    if(await launchesDatabase.findOne({flightNumber:checkFlightNumber})){
+        return true;
+    }
 }
 
-function getAllLaunches(){
-    return Array.from(launches.values());
+async function getLatestFlightNumber(){
+    const latestLaunch= await launchesDatabase.findOne({}).sort('-flightNumber');
+    if(!latestLaunch){
+        return DEFAULT_FLIGHT_NUMBER;
+    }
+    return latestLaunch.flightNumber;
 }
 
-function addNewLaunch(launch){
-    latestFlightNumber++;
-    launches.set(latestFlightNumber,Object.assign(launch,{
+async function getAllLaunches(){
+    return await launchesDatabase.find({},{'_id':0, '__v':0});
+}
+
+async function saveLaunch(launch){
+    const planet = await planets.findOne({kepler_name: launch.target});
+    if (!planet){
+        throw new Error("No matching target was found");
+    } 
+      await launchesDatabase.findOneAndUpdate({flightNumber:launch.flightNumber},launch,{upsert : true})
+}
+
+async function addNewLaunch(launch){
+    const latestFlightNumber= (await getLatestFlightNumber())+1;
+    Object.assign(launch,{
         success: true,
         upcoming: true,
         customers: ['Biplav','Nasa'],
         flightNumber: latestFlightNumber,
-    }));
+    })
+    await saveLaunch(launch);
 }
-function abortLaunchById(launchId){
-    const aborted= launches.get(launchId);
+
+async function abortLaunchById(launchId){
+    const aborted= await launchesDatabase.findOne({flightNumber:launchId})
     aborted.upcoming=false;
     aborted.success=false;
+    await saveLaunch(aborted);
     return aborted;
 }
 

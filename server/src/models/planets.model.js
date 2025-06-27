@@ -49,7 +49,7 @@ async function savePlanet(planet) {
 }
 
 async function getAllPlanets(){
-  return await planets.find({});
+  return await planets.find({},{'kepler_name': 1,'_id':0});
 } 
 
 module.exports = {

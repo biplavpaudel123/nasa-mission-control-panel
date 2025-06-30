@@ -1,12 +1,12 @@
 const http = require("http");
-const env=require('dotenv');
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname + '/../.env')});
 
 const app= require('./app');
 const {loadPlanetsData}= require ('./models/planets.model');
 const {loadLaunchesData}= require ('./models/launches.model');
 const {mongoConnect}= require('./services/mongo');
 
-env.config({ path: '../.env'});
 
 const PORT=process.env.PORT || 8000;
 

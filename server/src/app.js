@@ -17,7 +17,7 @@ app.use(morgan('combined'));//logging
 app.use(express.json());
 app.use(express.static(path.join(__dirname,'..','public')))
 app.use('/v1',apiv1);
-app.get('/*name',(req,res)=>{ //update in v5 must change /* to /*name
+app.get('/*name',(req,res)=>{ //update in express v5 must change /* to /*name
     res.sendFile(path.join(__dirname,'..','public','index.html'));
 })
 
